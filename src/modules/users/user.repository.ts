@@ -12,3 +12,15 @@ export const createUser = async (
     throw error;
   }
 };
+
+export const getUserByEmail = async (email: string): Promise<IUser | null> => {
+  console.log(`getOneUserByEmail: ${email}`);
+  try {
+    const user = await User.findOne({ email });
+ 
+    return user;
+  } catch (error: any) {
+    console.error(`error when retrieving user: ${email}, error: ${error}`);
+    throw error;
+  }
+};
