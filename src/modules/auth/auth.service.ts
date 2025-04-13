@@ -1,8 +1,8 @@
 import dotenv from "dotenv";
 
-import { createUser } from "../users/user.repository";
+import { createUser, getUserByEmail } from "../users/user.repository";
 import { IUser, User } from "../users/models/user.model";
-import { AuthResult } from "./interface/auth.interface";
+import { AuthResult, LoginInput } from "./interface/auth.interface";
 import HttpException from "../../util/http-exception.model";
 import { encrypt } from "./encrypt";
 
@@ -48,5 +48,50 @@ export const signup = async (registerUser: IUser): Promise<AuthResult> => {
         error: { error },
       });
     }
+  }
+};
+
+
+export const login = async (loginInput: LoginInput): Promise<AuthResult> => {
+  try {
+    const user: any = await getUserByEmail(loginInput.email);
+    if (!user) {
+      throw new HttpException(401, {
+        message: "Invalid email or password",
+        result: false,
+      });
+    }
+ 
+    const isMatch = await encrypt.verifyPassword(
+      user.password,
+      loginInput.password
+    );
+ 
+    if (!isMatch) {
+      throw new HttpException(401, {
+        message: "Invalid email or password",
+        result: false,
+      });
+    }
+ 
+    const token = encrypt.generateToken({
+      userId: user._id,
+      email: user.email,
+    });
+ 
+    return {
+      message: "Login successful",
+      result: true,
+      data: {
+        user: {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+        },
+        accessToken: token,
+      },
+    };
+  } catch (error: any) {
+    throw error;
   }
 };
