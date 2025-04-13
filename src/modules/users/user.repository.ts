@@ -89,3 +89,16 @@ export const validateUserById = async (
     throw error;
   }
 };
+
+export const deleteUser = async (id: string) => {
+  try {
+    await validateUserById([id], true);
+    const deletedUser = await User.findByIdAndDelete(id).lean();
+    return deletedUser;
+  } catch (error) {
+    console.error(
+      `Error occurred when deleting user ID: ${id}, error: ${error}`
+    );
+    throw error;
+  }
+};
