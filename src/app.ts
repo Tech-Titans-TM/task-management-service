@@ -2,9 +2,12 @@ import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 
+import connectMongoDB from "./config/db";
 import { errorHandler } from "./middleware/errorHandler";
 
 dotenv.config();
+
+connectMongoDB();
 
 const app = express();
 
