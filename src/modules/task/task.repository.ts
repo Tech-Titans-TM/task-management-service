@@ -20,6 +20,23 @@ export const saveTask = async (id: string, newTask: ITask) => {
   }
 };
 
+export const getTaskById = async (id: string): Promise<ITask | null> => {
+  try {
+    logger.info(`Fetching Task by ID: ${id}`);
+ 
+    await validateTaskById([id], true);
+ 
+    const task = await Task.findById(id)
+      .select("-createdAt -updatedAt -__v")
+      .exec();
+ 
+    return task;
+  } catch (error) {
+    logger.error(`Error in getTaskById (ID: ${id}): ${JSON.stringify(error)}`);
+    throw error;
+  }
+};
+
 export const retrieveTasksByUserId = async (userId: string) => {
   try {
     const tasks = await Task.find({ user: userId })
@@ -55,6 +72,21 @@ export const updateTask = async (taskId: string, updateTask: ITask) => {
     return updatedUser;
   } catch (error) {
     logger.error(`Error updating task ID: ${taskId}, error: ${error}`);
+    throw error;
+  }
+};
+
+export const deleteTask = async (id: string) => {
+  try {
+    logger.info(`Deleting Task ID: ${id}`);
+ 
+    const deletedTask = await Task.findByIdAndDelete(id).lean();
+ 
+    return deletedTask;
+  } catch (error: any) {
+    logger.error(
+      `Error deleting task ID: ${id}, error: ${JSON.stringify(error.message)}`
+    );
     throw error;
   }
 };
