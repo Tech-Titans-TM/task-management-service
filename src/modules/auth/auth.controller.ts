@@ -7,7 +7,7 @@ const router = Router();
 router.post(
   "/signup",
   async (req: Request, res: Response, next: NextFunction) => {
-    logger.info("POST /signup called");
+    logger.info("POST auth/signup called");
 
     try {
       const user = await signup({ ...req.body.user });
@@ -22,7 +22,7 @@ router.post(
 router.post(
   "/login",
   async (req: Request, res: Response, next: NextFunction) => {
-    logger.info("POST /login called");
+    logger.info("POST auth/login called");
 
     try {
       const result = await login(req.body);
