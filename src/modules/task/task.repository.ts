@@ -16,3 +16,16 @@ export const saveTask = async (id: string, newTask: ITask) => {
     throw error;
   }
 };
+
+export const retrieveTasksByUserId = async (userId: string) => {
+  try {
+    const tasks = await Task.find({ user: userId })
+      .select("-user -createdAt -updatedAt -__v")
+      .exec();
+    return tasks;
+  } catch (error) {
+    console.error(`Error fetching tasks for user ${userId}:`, error);
+    throw error;
+  }
+};
+ 
