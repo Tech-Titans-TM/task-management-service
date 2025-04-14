@@ -89,7 +89,6 @@ export const validateUser = async (
     });
   }
 
-  logger.info(`User ID(s) validated: ${validatedData.join(", ")}`);
   return validatedData;
 };
 

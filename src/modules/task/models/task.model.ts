@@ -3,12 +3,12 @@ import mongoose, { Schema, Document } from "mongoose";
 const TaskSchema = new Schema(
   {
     user: { type: Schema.Types.ObjectId, ref: "User" },
-    name: { type: String, required: true },
-    description: { type: String, required: true },
-    dueDate: { type: Date, required: true, unique: true },
-    dueTime: { type: Date, required: true, unique: true },
-    priority: { type: String, required: true },
-    status: { type: String, required: true },
+    name: { type: String },
+    description: { type: String },
+    dueDate: { type: Date },
+    dueTime: { type: Date },
+    priority: { type: String },
+    status: { type: String },
   },
   { timestamps: true }
 );
