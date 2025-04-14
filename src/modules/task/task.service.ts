@@ -1,7 +1,7 @@
 import HttpException from "../../util/http-exception.model";
 import { validateUser } from "../users/user.service";
 import { ITask } from "./models/task.model";
-import { saveTask } from "./task.repository";
+import { retrieveTasksByUserId, saveTask } from "./task.repository";
 
 export const createTask = async (id: string, newTask: ITask) => {
   try {
@@ -17,6 +17,25 @@ export const createTask = async (id: string, newTask: ITask) => {
     }
 
     return task;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getTasksByUserId = async (id: string) => {
+  try {
+    const isUUID: boolean = true;
+    await validateUser([id], isUUID);
+ 
+    const data = await retrieveTasksByUserId(id);
+    if (!data) {
+      throw new HttpException(500, {
+        message: `Error occurred when retrieving tasks by userId: ${id}`,
+        result: false,
+      });
+    }
+ 
+    return data;
   } catch (error) {
     throw error;
   }

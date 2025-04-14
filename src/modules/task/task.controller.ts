@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 
-import { createTask } from "./task.service";
+import { createTask, getTasksByUserId } from "./task.service";
 
 const router = Router();
 
@@ -13,5 +13,17 @@ router.post("/:id", async (req: Request, res: Response, next: NextFunction) => {
     next(error);
   }
 });
+
+router.get(
+  "/user/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const tasks = await getTasksByUserId(req.params.id);
+      res.status(201).json(tasks);
+    } catch (error: any) {
+      next(error);
+    }
+  }
+);
 
 export { router as taskController };
