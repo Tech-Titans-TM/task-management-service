@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 
-import { createTask, getTasksByUserId, updateTaskDetails } from "./task.service";
+import { createTask, deleteTaskById, getTasksByUserId, updateTaskDetails } from "./task.service";
+import logger from "../../util/logger";
 
 const router = Router();
 
@@ -34,5 +35,22 @@ router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
     next(error);
   }
 });
+
+router.delete(
+  "/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    const taskId = req.params.id;
+    logger.info(`DELETE /task/${taskId} - Deletion request received`);
+ 
+    try {
+      const task = await deleteTaskById(taskId);
+      logger.info(`Task deleted successfully: ${taskId}`);
+      res.status(201).json(task);
+    } catch (error: any) {
+      logger.error(`Error deleting task ${taskId}: ${error.message}`);
+      next(error);
+    }
+  }
+);
 
 export { router as taskController };
