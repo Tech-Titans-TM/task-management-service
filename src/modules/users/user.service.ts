@@ -62,6 +62,21 @@ export const getUserById = async (id: string): Promise<IUser | null> => {
   }
 };
 
+export const validateUser = async (
+  id: string[],
+  isMongo: boolean
+): Promise<string[] | any> => {
+  const validatedData = await validateUserById(id, isMongo);
+
+  if (!validatedData || validatedData.length === 0) {
+    throw new HttpException(202, {
+      message: `UserId not found - ID: ${id}`,
+    });
+  }
+
+  return validatedData;
+};
+
 export const validateUserById = async (
   id: string[],
   isMongoId: boolean
