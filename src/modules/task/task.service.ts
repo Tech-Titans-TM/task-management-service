@@ -1,7 +1,7 @@
 import HttpException from "../../util/http-exception.model";
 import { validateUser } from "../users/user.service";
 import { ITask } from "./models/task.model";
-import { retrieveTasksByUserId, saveTask } from "./task.repository";
+import { retrieveTasksByUserId, saveTask, updateTask } from "./task.repository";
 
 export const createTask = async (id: string, newTask: ITask) => {
   try {
@@ -37,6 +37,21 @@ export const getTasksByUserId = async (id: string) => {
  
     return data;
   } catch (error) {
+    throw error;
+  }
+};
+
+export const updateTaskDetails = async (id: string, updateTaskData: ITask) => {
+  try {
+    const updatedTask = await updateTask(id, updateTaskData);
+    if (!updatedTask) {
+      throw new HttpException(500, {
+        message: `Error updating task with ID: ${id}`,
+        result: false,
+      });
+    }
+    return updatedTask;
+  } catch (error: any) {
     throw error;
   }
 };

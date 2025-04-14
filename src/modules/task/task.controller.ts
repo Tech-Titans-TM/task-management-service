@@ -1,6 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 
-import { createTask, getTasksByUserId } from "./task.service";
+import { createTask, getTasksByUserId, updateTaskDetails } from "./task.service";
 
 const router = Router();
 
@@ -25,5 +25,14 @@ router.get(
     }
   }
 );
+
+router.put("/:id", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const task = await updateTaskDetails(req.params.id, req.body);
+    res.status(201).json(task);
+  } catch (error: any) {
+    next(error);
+  }
+});
 
 export { router as taskController };
