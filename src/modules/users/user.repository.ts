@@ -16,10 +16,9 @@ export const createUser = async (
 };
 
 export const getUserByEmail = async (email: string): Promise<IUser | null> => {
-  console.log(`getOneUserByEmail: ${email}`);
   try {
     const user = await User.findOne({ email });
- 
+
     return user;
   } catch (error: any) {
     console.error(`error when retrieving user: ${email}, error: ${error}`);
@@ -30,7 +29,7 @@ export const getUserByEmail = async (email: string): Promise<IUser | null> => {
 export const updateUser = async (id: string, updateUser: IUser) => {
   try {
     await validateUserById([id], true);
- 
+
     const updatedUser = await User.findOneAndUpdate(
       { _id: id },
       { $set: updateUser },
@@ -42,35 +41,35 @@ export const updateUser = async (id: string, updateUser: IUser) => {
     if (!updatedUser) {
       throw new Error(`User with ID ${id} not found.`);
     }
- 
+
     return updatedUser;
   } catch (error) {
     console.error(`Error updating user with ID: ${id}, error: ${error}`);
     throw error;
   }
 };
- 
+
 export const validateUserById = async (
   id: string[],
   isMongoId: boolean
 ): Promise<string[]> => {
   try {
     let users;
- 
+
     if (isMongoId) {
       const invalidIds = id.filter((id) => !Types.ObjectId.isValid(id));
- 
+
       if (invalidIds.length > 0) {
         throw new HttpException(202, {
           message: `Invalid Mongo ID(s): ${invalidIds.join(", ")}`,
           result: false,
         });
       }
- 
+
       users = await User.find({ _id: { $in: id } }, { _id: 1 }).lean();
     } else {
       users = await User.find({ _id: { $in: id } }, { _id: 1 }).lean();
- 
+
       if (!users.length) {
         throw new HttpException(202, {
           message: "No valid courses found",
@@ -78,7 +77,7 @@ export const validateUserById = async (
         });
       }
     }
- 
+
     return users.map((user) => user._id.toString());
   } catch (error) {
     console.error(
