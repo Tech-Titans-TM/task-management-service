@@ -19,7 +19,7 @@ router.post(
     try {
       const result = await createTask(userId, req.body);
 
-      res.status(201).json({ result });
+      res.status(201).json(result);
     } catch (error: any) {
       logger.error(`Error creating task for user ${userId}: ${error.message}`);
       next(error);
