@@ -32,6 +32,7 @@ export const signup = async (registerUser: IUser): Promise<AuthResult> => {
       result: true,
       data: {
         user: {
+          userId: newUser._id,
           firstName: newUser.firstName,
           lastName: newUser.lastName,
           email: newUser.email,
@@ -102,6 +103,7 @@ export const login = async (loginInput: LoginInput): Promise<AuthResult> => {
       result: true,
       data: {
         user: {
+          userId: user._id,
           firstName: user.firstName,
           lastName: user.lastName,
           email: user.email,
