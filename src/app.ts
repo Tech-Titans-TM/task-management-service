@@ -1,6 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
-import cors from "cors";
+// import cors from "cors";
 
 import connectMongoDB from "./config/db";
 import routes from "./routes";
@@ -13,7 +13,7 @@ connectMongoDB();
 const app = express();
 app.use(express.json());
 
-app.use(cors());
+// app.use(cors());
 
 app.use(routes);
 
