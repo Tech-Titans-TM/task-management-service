@@ -13,7 +13,10 @@ connectMongoDB();
 const app = express();
 app.use(express.json());
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://18.142.227.149:5173/', /
+  credentials: true               
+}));
 
 app.use(routes);
 
