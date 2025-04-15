@@ -3,6 +3,7 @@ export interface AuthResult {
   result?: boolean;
   data?: {
     user?: {
+      userId: any;
       firstName: string;
       lastName: string;
       email: string;
